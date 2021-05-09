@@ -1,0 +1,167 @@
+<div class="container tm-mt-big tm-mb-big">
+    <div class="row">
+      <div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mx-auto">
+        <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+          <div class="row">
+            <div class="col-12">
+              
+              <h2 class="tm-block-title d-inline-block">Billing Process</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12 col-lg-6 col-md-12">
+              <form name="form" (ngSubmit)="f.form.valid && nextToBillingProcess()" #f="ngForm" novalidate>
+              <div class="row" *ngIf="isInitBillingProcess; else billingComponent">
+                  <div class="col-12">
+                    <div class="form-group mb-3 ">
+                      <label
+                        for="name"
+                        >Customer or Shop name*
+                      </label>
+                      <input                    
+                        type="text"
+                        placeholder="customer or shop name"
+                        class="form-control"
+                        [(ngModel)]="initInfo.customerName"
+                        name="customerName"
+                        #customerName="ngModel"
+                        required
+                      />
+                      <div *ngIf="f.submitted && customerName.invalid" class="invalid-feedback d-block">
+                        <div *ngIf="customerName.errors.required">Name is required</div>
+                      </div>
+                      </div>
+                      <div >
+                        <button class="btn btn-primary btn-block text-uppercase"
+                        >Next</button>
+                      </div>
+                  </div>
+                
+              </div>
+              </form>
+
+
+
+             
+                <ng-template #billingComponent>
+                  <form name="billingForm" #fb="ngForm" (ngSubmit)=" addProductToBilling(fb.form)" novalidate>
+                  <h6 class="d-inline-block font-weight-bold mb-3" 
+                  style="color: white;">Customer Name : {{initInfo.customerName}} </h6>
+                  <div class="row">
+                    <div class="form-group mb-3 col-12">
+                      <label
+                      
+                        >Product*
+                      </label>
+                      <div>
+                          <ng-autocomplete 
+                            [data]="autoCompleteData"
+                            [searchKeyword]="keyword"
+                            (selected)='selectEvent($event)'
+                            [itemTemplate]="itemTemplate"
+                            [notFoundTemplate]="notFoundTemplate"
+                            placeholder="search product name.."
+                            [(ngModel)]="billingInfo.product"
+                            name="product"
+                            #product="ngModel"
+                            required
+                            >                                 
+                          </ng-autocomplete>
+                          <!-- <div *ngIf="showAutoCompleteErrorMsg">Product name is required</div> -->
+                          <div *ngIf="submitted && product.invalid" class="invalid-feedback d-block mt-3">
+                            <div *ngIf="product.errors.required">Product is required</div>
+                          </div>
+                          <ng-template #itemTemplate let-item>
+                          <a [innerHTML]="item.name"></a>
+                          </ng-template>
+                          
+                          <ng-template #notFoundTemplate let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                          </ng-template>
+                          </div>
+                  </div>
+                    <div class="form-group mb-3 col-6">
+                        <label
+                        
+                          >Price*
+                        </label>
+                      <input type="text" 
+                        class="form-control" 
+                        [(ngModel)]="billingInfo.price"
+                        name="price"
+                        #price="ngModel"
+                        required
+                      >
+                      <div *ngIf=" submitted && price.invalid" class="invalid-feedback d-block">
+                        <div *ngIf="price.errors.required">Price is required</div>
+                      </div>
+                    </div>
+                    <div class="form-group mb-3 col-6">
+                      <label
+                      
+                        >Quantity*
+                      </label>
+                    <input type="number" 
+                      class="form-control" 
+                      [(ngModel)]="billingInfo.quantity"
+                      name="quantity"
+                      #quantity="ngModel"
+                      required
+                    >
+                    <div *ngIf="submitted && quantity.invalid" class="invalid-feedback d-block">
+                      <div *ngIf="quantity.errors.required">Quantity is required</div>
+                    </div>
+                  </div>
+                  </div>
+                  <div >
+                    <button type="submit"
+                    class="btn btn-primary btn-block text-uppercase"
+                    >Add</button>
+                  </div>
+                </form>
+                  </ng-template>
+              
+
+          <div class="tm-product-table-container mt-3" *ngIf="!isInitBillingProcess">
+            
+            <table class="table table-hover tm-table-small tm-product-table">
+              <thead>
+                <tr>
+                  <th scope="col" style="width: fit-content;">PRODUCT NAME</th>
+                  <th scope="col" style="width: 100px;">QUANTITY</th>
+                  <th scope="col" style="width: 80px;">PRICE</th>
+                  <th scope="col" style="width: 100px;">TOTAL(RS)</th>
+                  <th scope="col" style="width: 50px;">ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of billingDataArr">
+                 <td>
+                   {{data.product}}
+                 </td>
+                 <td>
+                  {{data.quantity}}
+                </td>
+                <td>
+                  {{data.price}}
+                </td>
+                <td>
+                  {{data.total}}
+                </td>
+                <td  style="text-align: center;">    
+                  <a class="tm-product-delete-link"  (click)="deleteBillingInfo($event,data._id)" >
+                    <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                  </a>
+                </td>
+                </tr>
+                <tr *ngIf="billingDataArr.length" >
+                  <td [attr.colSpan]="5">OVERALL TOTAL : {{calculateTotal(billingDataArr)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

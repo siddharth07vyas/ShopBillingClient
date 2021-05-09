@@ -3,14 +3,31 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProductComponent } from './product/product.component';
+import { BillingComponent } from './billing/billing.component';
+import { ProductModule } from './product/product.module';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DashboardComponent,
+    BillingComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    HttpClientModule,
+    FormsModule,
+   // ReactiveFormsModule,
+    AppRoutingModule,
+    ProductModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(),
+    AutocompleteLibModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,51 @@
+<div class="container mt-5">
+    <div class="row tm-content-row">
+      <div class="col-12 tm-block-col">
+        <div class="tm-bg-primary-dark tm-block tm-block-products">
+          <div class="form-group mb-3">
+            <input                    
+              type="text"
+              placeholder="Search by Name, Price"
+              class="form-control"
+              [(ngModel)]="searchTxt"
+            />
+            </div>
+          <div class="tm-product-table-container">
+            
+            <table class="table table-hover tm-table-small tm-product-table">
+              <thead>
+                <tr>
+                  <th scope="col">PRODUCT NAME</th>
+                  <th scope="col">TYPE</th>
+                  <th scope="col">PRICE</th>
+                  <th scope="col" style="width: 100px; text-align: center;">&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of productsArr | search: searchTxt" (click)="RowClick(product._id)">
+                  <td class="tm-product-name">
+                    {{product.name}}
+                  </td>
+                    <td>
+                      {{eProduct[product.secondayName]}}
+                    </td>
+                    <td>
+                      {{product.price}}
+                    </td>
+                    <td  style="text-align: center;">    
+                      <a class="tm-product-delete-link" [routerLink]="" (click)="OnDeleteProduct($event,product._id)" >
+                        <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                      </a>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- table container -->
+          <a
+             [routerLink]="'product-detail'"
+            class="btn btn-primary btn-block text-uppercase mb-3"><i class="fas fa-plus-circle mr-2 h6"></i>Add new product</a>
+        </div>
+      </div>
+    </div>
+  </div>
