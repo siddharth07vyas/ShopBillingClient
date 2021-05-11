@@ -58,4 +58,5 @@ export class GlobalConstants {
         }
 ]
 public static devURL: string = 'http://localhost:3000/'; 
+public static productionURL: string = 'https://nameless-earth-72370.herokuapp.com/';
 }

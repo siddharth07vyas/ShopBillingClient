@@ -11,7 +11,7 @@ export class BillingService {
   constructor(private http: HttpClient) { }
 
   GetBillingInfo(){
-    return this.http.get(GlobalConstants.devURL +  'billing/getAll')
+    return this.http.get(GlobalConstants.productionURL +  'billing/getAll')
     .pipe(map((data: any) =>{
       return data;
     }), catchError( error => {return throwError( 'Something went wrong!' );
@@ -19,14 +19,14 @@ export class BillingService {
   }
 
   SaveBillingInfo(billingObj: any){
-    return this.http.post(GlobalConstants.devURL +  'billing/addBilling', billingObj)
+    return this.http.post(GlobalConstants.productionURL +  'billing/addBilling', billingObj)
     .pipe(map((data: any) => {
       return data;
     }), catchError( error => {return throwError( 'Something went wrong!' );}))
   }
 
   UpdateBillingInfo(billingObj: any, billingId: string){
-    return this.http.put(GlobalConstants.devURL +  'billing/updateBilling' + '/'+billingId, billingObj)
+    return this.http.put(GlobalConstants.productionURL +  'billing/updateBilling' + '/'+billingId, billingObj)
     .pipe(map((data: any) => {
       return data;
     }), catchError( error => {return throwError( 'Something went wrong!' );}))
@@ -34,7 +34,7 @@ export class BillingService {
 
 
   GetBillingInfoById(billingId: string){
-    return this.http.get(GlobalConstants.devURL + 'billing/getBillingById'+ '/'+billingId).pipe(map((data: any) => {
+    return this.http.get(GlobalConstants.productionURL + 'billing/getBillingById'+ '/'+billingId).pipe(map((data: any) => {
       return data;
     }), catchError( error => {return throwError( 'Something went wrong!' );}))
   }

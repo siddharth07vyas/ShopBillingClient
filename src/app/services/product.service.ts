@@ -12,7 +12,7 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   GetProducts(){
-    return this.http.get(GlobalConstants.devURL +  'product/getAll')
+    return this.http.get(GlobalConstants.productionURL +  'product/getAll')
     .pipe(map((data: Product) =>{
       return data;
     }), catchError( error => {return throwError( 'Something went wrong!' );
@@ -20,28 +20,28 @@ export class ProductService {
   }
 
   SaveProduct(productObj: Product){
-    return this.http.post(GlobalConstants.devURL +  'product/addProduct', productObj)
+    return this.http.post(GlobalConstants.productionURL +  'product/addProduct', productObj)
     .pipe(map((data: any) => {
       return data;
     }), catchError( error => {return throwError( 'Something went wrong!' );}))
   }
 
   UpdateProduct(productObj: Product, productId: string){
-    return this.http.put(GlobalConstants.devURL +  'product/updateProduct' + '/'+productId, productObj)
+    return this.http.put(GlobalConstants.productionURL +  'product/updateProduct' + '/'+productId, productObj)
     .pipe(map((data: any) => {
       return data;
     }), catchError( error => {return throwError( 'Something went wrong!' );}))
   }
 
   DeleteProduct(productId: string){
-    return this.http.delete(GlobalConstants.devURL + 'product/deleteProduct' + '/'+ productId)
+    return this.http.delete(GlobalConstants.productionURL + 'product/deleteProduct' + '/'+ productId)
     .pipe(map((data: any) => {
       return data;
     }), catchError( error => {return throwError( 'Something went wrong!' );}))
   }
 
   GetProductById(productId: string){
-    return this.http.get(GlobalConstants.devURL + 'product/getProductById'+ '/'+productId).pipe(map((data: any) => {
+    return this.http.get(GlobalConstants.productionURL + 'product/getProductById'+ '/'+productId).pipe(map((data: any) => {
       return data;
     }), catchError( error => {return throwError( 'Something went wrong!' );}))
   }
