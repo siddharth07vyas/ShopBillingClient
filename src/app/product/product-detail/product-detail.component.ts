@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgxSpinnerService } from "ngx-spinner";
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/models/product';
 import{ GlobalConstants } from '../../common/global-constants';
 import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-product-detail',
@@ -23,7 +25,8 @@ export class ProductDetailComponent implements OnInit {
     private productService: ProductService,
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
     ) { 
       if(this.activateRoute.snapshot.params['id']){
         this.productId = this.activateRoute.snapshot.params.id;
@@ -40,7 +43,9 @@ export class ProductDetailComponent implements OnInit {
       secondayName: [null, Validators.required]
     })
     if(!this.isPageAddMode){ 
+      this.spinner.show();
       this.productService.GetProductById(this.productId).subscribe((data: Product) =>{
+        this.spinner.hide();
         this.productForm.patchValue({
           name:data.name,
           price: data.price,
@@ -61,6 +66,7 @@ export class ProductDetailComponent implements OnInit {
     } 
     let result = null;
     let successMsg = "";
+    this.spinner.show();
     if(this.isPageAddMode){
       result = this.productService.SaveProduct(this.productForm.value);
       successMsg = "Product added successfully"
@@ -70,6 +76,7 @@ export class ProductDetailComponent implements OnInit {
       successMsg = "Product updated successfully"
     } 
     result.subscribe((data: any) =>{
+      this.spinner.hide();
       this.toastr.success(successMsg);
       this.isSubmitted= false;
       this.productForm.reset();

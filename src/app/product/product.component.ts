@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from "ngx-spinner";
 import { Product } from 'src/models/product';
 import { ProductService } from '../services/product.service';
 import {ProductTypeEnum} from '../enums/product'
@@ -16,7 +17,8 @@ export class ProductComponent implements OnInit {
   constructor(
     private router: Router, 
     private activatedRoute: ActivatedRoute,
-    private productService: ProductService) {
+    private productService: ProductService,
+    private spinner: NgxSpinnerService) {
    }
 
   ngOnInit(): void {
@@ -24,7 +26,9 @@ export class ProductComponent implements OnInit {
   }
 
   GetAllProducts(){
+    this.spinner.show();
     this.productService.GetProducts().subscribe((data: any) =>{
+      this.spinner.hide();
       this.productsArr = data;
     })
   }
@@ -35,8 +39,9 @@ export class ProductComponent implements OnInit {
 
   OnDeleteProduct(event,id): void{
     event.preventDefault();
-    event.stopPropagation()
-    this.productService.DeleteProduct(id).subscribe((data: any) =>{
+    event.stopPropagation();
+    this.spinner.show();
+    this.productService.DeleteProduct(id).subscribe((data: any) =>{    
       this.GetAllProducts();
     })
   }

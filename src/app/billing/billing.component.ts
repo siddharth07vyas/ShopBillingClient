@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BillingService } from '../services/billing.service';
 import { ProductService } from '../services/product.service';
 import { v4 as uuidv4 } from 'uuid';
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
@@ -26,10 +27,13 @@ export class BillingComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private billingService: BillingService) {
+    private billingService: BillingService,
+    private spinner: NgxSpinnerService) {
    }
   ngOnInit(): void {
+    this.spinner.show();
     this.productService.GetProducts().subscribe((data: any) =>{
+      this.spinner.hide()
       this.autoCompleteData = data;
     })
   }
@@ -44,7 +48,9 @@ export class BillingComponent implements OnInit {
       billingInfo: '',
       datetime: Date.now()
     }
+    this.spinner.show();
     this.billingService.SaveBillingInfo(saveBillingObj).subscribe((data: any) =>{
+      this.spinner.hide();
       this.billingData = data;
       this.isInitBillingProcess = false
     })
@@ -61,15 +67,13 @@ export class BillingComponent implements OnInit {
     this.billingInfo.id=uuidv4();
     let cloneBillingDataArr = JSON.parse(JSON.stringify(this.billingDataArr));
     cloneBillingDataArr.push(this.billingInfo);
-    
-    // let billingObj = {
-    //   customerName: this.billingData.customerName,
-    //   billingInfo: JSON.stringify(cloneBillingDataArr)
-    // }
+  
     let data = this.returnBillingInfo(cloneBillingDataArr);
 
+    this.spinner.show();
     this.billingService.UpdateBillingInfo(data,this.billingData._id).subscribe((data)=>{
       console.log(data);
+      this.spinner.hide();
       this.resetbillingInfoObj();
       this.submitted = false;
       this.getBillingsInfo();
@@ -99,7 +103,9 @@ export class BillingComponent implements OnInit {
 
   getBillingsInfo(): void{
     this.billingDataArr = [];
+    this.spinner.show();
     this.billingService.GetBillingInfoById(this.billingData._id).subscribe((data)=>{
+      this.spinner.hide();
       this.billingDataArr  = JSON.parse(data.billingValues);
     })
   }
@@ -126,8 +132,10 @@ export class BillingComponent implements OnInit {
       this.billingDataArr.splice(index, 1);
       let data = this.returnBillingInfo(this.billingDataArr);
 
+      this.spinner.show();
       this.billingService.UpdateBillingInfo(data,this.billingData._id).subscribe((data)=>{
         console.log(data);
+        this.spinner.hide();
         this.resetbillingInfoObj();
         this.submitted = false;
         this.getBillingsInfo();

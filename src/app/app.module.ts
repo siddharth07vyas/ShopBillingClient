@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { FormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from "ngx-spinner";
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,8 @@ import { FormsModule } from '@angular/forms';
     ProductModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
